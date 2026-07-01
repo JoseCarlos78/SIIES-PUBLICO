@@ -1,25 +1,6 @@
 import Link from "next/link";
-
-const apps = [
-  {
-    name: "SIIES Web",
-    description:
-      "El portal completo para la administración escolar: control de alumnos, docentes, grupos, horarios, calificaciones y reportes oficiales.",
-    tag: "Plataforma web",
-  },
-  {
-    name: "SIIES Alumnos",
-    description:
-      "App móvil para que los alumnos consulten su horario, calificaciones, avisos y trámites desde cualquier lugar.",
-    tag: "App móvil",
-  },
-  {
-    name: "SIIES Docentes",
-    description:
-      "Herramienta para profesores: pase de lista, captura de calificaciones, disponibilidad de horarios y comunicación con la institución.",
-    tag: "App móvil",
-  },
-];
+import AppsShowcase from "@/components/AppsShowcase";
+import Reveal from "@/components/Reveal";
 
 const services = [
   {
@@ -95,41 +76,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Apps */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-            Las apps de SIIES
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-slate-600">
-            Un ecosistema de aplicaciones pensado para cada integrante de la
-            comunidad educativa.
-          </p>
-        </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {apps.map((app) => (
-            <div
-              key={app.name}
-              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
-            >
-              <span className="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
-                {app.tag}
-              </span>
-              <h3 className="mt-4 text-xl font-semibold text-slate-900">
-                {app.name}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                {app.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Apps (interactivo) */}
+      <AppsShowcase />
 
       {/* Servicios */}
       <section className="bg-slate-50">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <div className="text-center">
+          <Reveal className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900">
               Todo lo que tu institución necesita
             </h2>
@@ -137,12 +90,13 @@ export default function Home() {
               Servicios diseñados para cubrir el ciclo escolar completo, desde
               la planeación hasta la entrega de resultados.
             </p>
-          </div>
+          </Reveal>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
-              <div
+            {services.map((service, i) => (
+              <Reveal
                 key={service.title}
-                className="rounded-2xl bg-white p-6 shadow-sm"
+                delay={(i % 3) * 100}
+                className="rounded-2xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
               >
                 <div className="text-3xl">{service.icon}</div>
                 <h3 className="mt-4 text-lg font-semibold text-slate-900">
@@ -151,10 +105,80 @@ export default function Home() {
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">
                   {service.description}
                 </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
+      </section>
+
+      {/* Aula SIIES (acceso alumno/docente) */}
+      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <Reveal className="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-brand-50 to-white">
+          <div className="grid items-center gap-10 p-8 sm:p-12 lg:grid-cols-2">
+            <div>
+              <span className="inline-block rounded-full bg-brand-100 px-4 py-1 text-sm font-medium text-brand-700">
+                Nuevo · Aula SIIES
+              </span>
+              <h2 className="mt-5 text-3xl font-bold tracking-tight text-slate-900">
+                Un aula digital para docentes y alumnos
+              </h2>
+              <p className="mt-4 text-slate-600">
+                Crea actividades y formularios, recíbelos en línea y califícalos
+                en un solo lugar. Los alumnos consultan sus tareas, responden y
+                revisan su calificación desde cualquier dispositivo.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  href="/acceso"
+                  className="rounded-lg bg-brand-600 px-6 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
+                >
+                  Entrar al Aula
+                </Link>
+                <Link
+                  href="/acceso"
+                  className="rounded-lg border border-slate-300 bg-white px-6 py-3 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+                >
+                  Soy docente
+                </Link>
+              </div>
+            </div>
+
+            <ul className="grid gap-4">
+              {[
+                {
+                  icon: "📝",
+                  title: "Formularios y tareas",
+                  text: "Construye cuestionarios con opción múltiple, verdadero/falso y respuesta abierta.",
+                },
+                {
+                  icon: "✅",
+                  title: "Revisión y calificación",
+                  text: "Recibe las entregas, califícalas y envía retroalimentación al alumno.",
+                },
+                {
+                  icon: "📱",
+                  title: "Acceso desde cualquier lugar",
+                  text: "Alumnos y docentes entran con su cuenta desde web o móvil.",
+                },
+              ].map((item, i) => (
+                <Reveal
+                  as="li"
+                  key={item.title}
+                  delay={i * 100}
+                  className="flex items-start gap-4 rounded-2xl bg-white p-5 shadow-sm"
+                >
+                  <span className="text-2xl">{item.icon}</span>
+                  <div>
+                    <h3 className="font-semibold text-slate-900">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-600">{item.text}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
       </section>
 
       {/* CTA final */}

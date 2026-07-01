@@ -23,3 +23,45 @@
 body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
+
+/* Animación de aparición al hacer scroll (ver components/Reveal.tsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Entrada del modal del Aula */
+@keyframes aula-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.aula-modal {
+  animation: aula-modal-in 0.22s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .aula-modal {
+    animation: none;
+  }
+}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useAula } from "@/components/aula/AulaProvider";
 
 const links = [
   { href: "/", label: "Inicio" },
@@ -14,6 +15,11 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { currentUser } = useAula();
+
+  const access = currentUser
+    ? { href: "/aula", label: "Mi aula" }
+    : { href: "/acceso", label: "Acceso" };
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
@@ -43,6 +49,18 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+          <li>
+            <Link
+              href={access.href}
+              className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                pathname.startsWith("/aula") || pathname === "/acceso"
+                  ? "bg-brand-50 text-brand-700"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
+              {access.label}
+            </Link>
+          </li>
           <li>
             <Link
               href="/soporte#contacto"
@@ -89,6 +107,15 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+          <li>
+            <Link
+              href={access.href}
+              onClick={() => setOpen(false)}
+              className="mt-1 block rounded-md bg-brand-600 px-3 py-2 text-center text-sm font-semibold text-white hover:bg-brand-700"
+            >
+              {access.label}
+            </Link>
+          </li>
         </ul>
       )}
     </header>
